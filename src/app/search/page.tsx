@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useState, useMemo, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
@@ -8,7 +9,7 @@ import ProductCard from "@/components/ProductCard";
 import { PRODUCTS, CATEGORIES, BRANDS } from "@/data/mockData";
 import { Product } from "@/types";
 
-export default function SearchPage() {
+function SearchContent() {
     const searchParams = useSearchParams();
     const router = useRouter();
 
@@ -31,7 +32,6 @@ export default function SearchPage() {
     const filteredProducts = useMemo(() => {
         let result = [...PRODUCTS];
 
-        // Search query
         if (searchQuery) {
             result = result.filter(p =>
                 p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -39,32 +39,26 @@ export default function SearchPage() {
             );
         }
 
-        // Category
         if (selectedCategory) {
             result = result.filter(p => p.category === selectedCategory);
         }
 
-        // Filter (Novedades, Ofertas)
         if (filterParam === "new") {
             result = result.filter(p => p.isNew);
         } else if (filterParam === "offers") {
             result = result.filter(p => p.isOffer);
         }
 
-        // Brands
         if (selectedBrand.length > 0) {
             result = result.filter(p => selectedBrand.includes(p.brand));
         }
 
-        // Price
         result = result.filter(p => p.price >= priceRange[0] && p.price <= priceRange[1]);
 
-        // Stock
         if (showInStockOnly) {
             result = result.filter(p => p.stock > 0);
         }
 
-        // Sort
         if (sortBy === "price-asc") {
             result.sort((a, b) => a.price - b.price);
         } else if (sortBy === "price-desc") {
@@ -99,7 +93,6 @@ export default function SearchPage() {
 
             <main className="pt-32 pb-24">
                 <div className="container mx-auto px-4 md:px-8">
-                    {/* Search Header */}
                     <div className="mb-12">
                         <h1 className="text-4xl font-black tracking-tighter uppercase mb-4">
                             {searchQuery ? `Resultados para "${searchQuery}"` : "Nuestro Catálogo"}
@@ -112,9 +105,7 @@ export default function SearchPage() {
                     </div>
 
                     <div className="flex flex-col lg:flex-row gap-12">
-                        {/* Sidebar Filters */}
                         <aside className="w-full lg:w-80 shrink-0 space-y-12">
-                            {/* Category Filter */}
                             <div className="space-y-6">
                                 <h3 className="font-black text-slate-900 uppercase tracking-widest text-xs">Categorías</h3>
                                 <div className="flex flex-wrap lg:flex-col gap-3">
@@ -130,7 +121,6 @@ export default function SearchPage() {
                                 </div>
                             </div>
 
-                            {/* Brands Filter */}
                             <div className="space-y-6">
                                 <h3 className="font-black text-slate-900 uppercase tracking-widest text-xs">Marcas</h3>
                                 <div className="grid grid-cols-1 gap-4">
@@ -154,7 +144,6 @@ export default function SearchPage() {
                                 </div>
                             </div>
 
-                            {/* Price Range */}
                             <div className="space-y-6">
                                 <h3 className="font-black text-slate-900 uppercase tracking-widest text-xs">Rango de Precio</h3>
                                 <div className="space-y-4">
@@ -179,7 +168,6 @@ export default function SearchPage() {
                                 </div>
                             </div>
 
-                            {/* Availability */}
                             <div className="space-y-6">
                                 <h3 className="font-black text-slate-900 uppercase tracking-widest text-xs">Disponibilidad</h3>
                                 <label className="flex items-center gap-3 cursor-pointer group">
@@ -198,9 +186,7 @@ export default function SearchPage() {
                             </div>
                         </aside>
 
-                        {/* Results Grid */}
                         <div className="flex-1">
-                            {/* Sorting */}
                             <div className="flex justify-between items-center mb-10 pb-6 border-b border-slate-50">
                                 <div className="hidden md:block">
                                     <p className="font-bold text-slate-400 text-sm">Mostrando resultados para: <span className="text-slate-900">{selectedCategory || "Todas las categorías"}</span></p>
@@ -245,5 +231,13 @@ export default function SearchPage() {
 
             <Footer />
         </div>
+    );
+}
+
+export default function SearchPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-xl">Cargando...</div></div>}>
+            <SearchContent />
+        </Suspense>
     );
 }
