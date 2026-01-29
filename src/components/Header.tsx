@@ -63,7 +63,6 @@ export default function Header() {
 
                 {/* Desktop Navigation */}
                 <nav className="hidden lg:flex items-center gap-8">
-                    {/* ... (Categories nav) */}
                     <div className="relative group">
                         <button
                             onMouseEnter={() => setIsCatOpen(true)}
@@ -112,13 +111,13 @@ export default function Header() {
                         </div>
                     </div>
 
+                    <Link href="/search" className={`font-bold text-sm uppercase tracking-widest transition-colors duration-300 ${isScrolled ? "text-slate-700 hover:text-primary" : "text-white/90 hover:text-white"}`}>Productos</Link>
                     <Link href="/search?filter=new" className={`font-bold text-sm uppercase tracking-widest transition-colors duration-300 ${isScrolled ? "text-slate-700 hover:text-primary" : "text-white/90 hover:text-white"}`}>Novedades</Link>
                     <Link href="/search?filter=offers" className={`font-bold text-sm uppercase tracking-widest transition-colors duration-300 ${isScrolled ? "text-slate-700 hover:text-primary" : "text-white/90 hover:text-white"}`}>Ofertas</Link>
                 </nav>
 
                 {/* Search & Actions */}
                 <div className="flex items-center gap-4 md:gap-6">
-                    {/* Search Bar */}
                     <div className="relative hidden lg:block">
                         <form onSubmit={handleSearch} className={`flex items-center rounded-full px-5 py-2 transition-all duration-300 ${isScrolled ? "bg-slate-100 border border-slate-200" : "bg-white/10 border border-white/20"} focus-within:bg-white focus-within:shadow-xl focus-within:border-primary/20`}>
                             <input
@@ -135,7 +134,6 @@ export default function Header() {
                             </button>
                         </form>
 
-                        {/* Suggestions Dropdown */}
                         {suggestions.length > 0 && (
                             <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[110]">
                                 {suggestions.map(p => (
@@ -158,13 +156,12 @@ export default function Header() {
                         )}
                     </div>
 
-                    <button className={`lg:hidden p-2 rounded-full transition-colors ${isScrolled ? "hover:bg-slate-100 text-slate-900" : "hover:bg-white/10 text-white"}`} onClick={() => setIsSearchOpen(true)}>
+                                        <button className={`lg:hidden p-2 rounded-full transition-colors ${isScrolled ? "hover:bg-slate-100 text-slate-900" : "hover:bg-white/10 text-white"}`} onClick={() => setIsSearchOpen(true)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
                     </button>
 
-                    {/* User Account */}
                     <div className="relative group/user">
                         <Link href={user ? "/account" : "/login"} className={`p-2 rounded-full transition-colors flex items-center gap-2 ${isScrolled ? "hover:bg-slate-100 text-slate-900" : "hover:bg-white/10 text-white"}`}>
                             {user ? (
@@ -197,7 +194,6 @@ export default function Header() {
 
                     <CartButton isScrolled={isScrolled} />
 
-                    {/* Mobile Menu Toggle */}
                     <button
                         className={`lg:hidden p-2 rounded-full transition-colors ${isScrolled ? "hover:bg-slate-100 text-slate-900" : "hover:bg-white/10 text-white"}`}
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -241,6 +237,7 @@ export default function Header() {
                                 ))}
                             </div>
                         </div>
+                        <Link href="/search" onClick={() => setIsMenuOpen(false)} className="text-3xl font-black text-slate-900">Productos</Link>
                         <Link href="/search?filter=new" onClick={() => setIsMenuOpen(false)} className="text-3xl font-black text-slate-900">Novedades</Link>
                         <Link href="/search?filter=offers" onClick={() => setIsMenuOpen(false)} className="text-3xl font-black text-slate-900 text-primary">Ofertas Especiales</Link>
                     </nav>
