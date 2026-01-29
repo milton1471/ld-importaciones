@@ -85,6 +85,7 @@ export default function CheckoutPage() {
             payment_method: formData.pago === 'mercadopago' ? 'mercadopago' : 'bacs',
             payment_method_title: formData.pago === 'mercadopago' ? 'Mercado Pago' : 'Transferencia bancaria',
             set_paid: false,
+            status: 'pending', // Siempre pendiente hasta recibir confirmación de pago
             billing: {
                 first_name: formData.nombre.split(' ')[0],
                 last_name: formData.nombre.split(' ').slice(1).join(' ') || '.',
@@ -110,22 +111,46 @@ export default function CheckoutPage() {
         };
 
         try {
-            const response = await fetch('/api/orders', {
+            // 1. Crear pedido en WooCommerce
+            const orderResponse = await fetch('/api/orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderPayload)
             });
 
-            const data = await response.json();
+            const orderData = await orderResponse.json();
 
-            if (!response.ok) throw new Error(data.error || "Fallo en la creación del pedido");
+            if (!orderResponse.ok) throw new Error(orderData.error || "Fallo en la creación del pedido");
 
-            setOrderNumber(data.number);
-            setCurrentStep("confirmacion");
-            window.scrollTo(0, 0);
+            const orderId = orderData.id;
+            setOrderNumber(orderData.number);
+
+            // 2. Si es Mercado Pago, crear preferencia y redirigir
+            if (formData.pago === 'mercadopago') {
+                const mpResponse = await fetch('/api/mercadopago/create-preference', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        items: cart,
+                        orderId: orderId,
+                        customerEmail: formData.email
+                    })
+                });
+
+                const mpData = await mpResponse.json();
+
+                if (!mpResponse.ok) throw new Error(mpData.error || "Fallo al crear preferencia de Mercado Pago");
+
+                // Redirigir a Mercado Pago
+                window.location.href = mpData.init_point;
+            } else {
+                // Si es transferencia, mostrar pantalla de éxito local
+                setCurrentStep("confirmacion");
+                window.scrollTo(0, 0);
+            }
         } catch (err: any) {
-            console.error("Error creating order:", err);
-            setOrderError("Hubo un problema al procesar tu pedido. Por favor intenta nuevamente.");
+            console.error("Error processing order:", err);
+            setOrderError("Hubo un problema al procesar tu pedido. " + (err.message || "Por favor intenta nuevamente."));
         } finally {
             setIsSubmitting(false);
         }

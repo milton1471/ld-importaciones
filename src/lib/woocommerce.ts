@@ -51,6 +51,9 @@ export const getCategories = async () => {
 
 export const createOrder = async (orderData: any) => {
     try {
+        console.log("=== DATOS DEL PEDIDO ===");
+        console.log(JSON.stringify(orderData, null, 2));
+        console.log("========================");
         const response = await api.post("orders", orderData);
         return response.data;
     } catch (error) {

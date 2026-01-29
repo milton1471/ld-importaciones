@@ -11,6 +11,9 @@ export async function POST(request: Request) {
         return NextResponse.json(order);
     } catch (error: any) {
         console.error("Order API Error:", error);
+        if (error.response?.data) {
+            console.error("WooCommerce Error Details:", error.response.data);
+        }
         return NextResponse.json(
             { error: error.message || "Error al procesar el pedido" },
             { status: 500 }
