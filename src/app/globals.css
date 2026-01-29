@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  /* Identidad LD Importaciones: Azul Solicitado #45a2ff */
+  --primary: #45A2FF;
+  --primary-dark: #378CD9;
+  --primary-light: #EBF5FF;
+  --secondary: #FFFFFF;
+
+  --background: #FFFFFF;
+  --foreground: #1E293B;
+
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(69, 162, 255, 0.2);
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  --color-secondary: var(--secondary);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.glass-effect {
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #FFFFFF 0%, #B9E5F3 100%);
+}
+
+/* GLOBAL SVG FIX */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Prevent giant icons */
+svg:not([width]) {
+  width: 1.5rem;
+}
+
+svg:not([height]) {
+  height: 1.5rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
