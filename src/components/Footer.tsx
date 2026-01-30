@@ -4,7 +4,7 @@ export default function Footer() {
     return (
         <footer className="bg-slate-900 text-white pt-24 pb-12 overflow-hidden relative">
             <div className="container mx-auto px-4 md:px-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24 relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-24 relative z-10">
                     <div className="space-y-8">
                         <div className="flex items-center gap-2">
                             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center font-black text-white text-2xl">LD</div>
@@ -33,7 +33,6 @@ export default function Footer() {
                             <li><Link href="/search?filter=offers" className="hover:text-white transition-colors">Ofertas Destacadas</Link></li>
                             <li><Link href="/search?category=Tecnología" className="hover:text-white transition-colors">Electrónica</Link></li>
                             <li><Link href="/search?category=Hogar" className="hover:text-white transition-colors">Hogar & Deco</Link></li>
-                            <li><Link href="/search?category=Camping" className="hover:text-white transition-colors">Aventura & Camping</Link></li>
                         </ul>
                     </div>
 
@@ -44,13 +43,22 @@ export default function Footer() {
                             <li><Link href="/returns" className="hover:text-white transition-colors">Cambios y Devoluciones</Link></li>
                             <li><Link href="/faq" className="hover:text-white transition-colors">Preguntas Frecuentes</Link></li>
                             <li><Link href="/contact" className="hover:text-white transition-colors">Contacto Directo</Link></li>
-                            <li><Link href="/terms" className="hover:text-white transition-colors">Términos del Servicio</Link></li>
+                        </ul>
+                    </div>
+
+                    <div className="space-y-8">
+                        <h4 className="font-black text-sm uppercase tracking-widest text-primary">Información Legal</h4>
+                        <ul className="space-y-4 text-slate-400 font-bold text-sm">
+                            <li><a href="https://gold-mink-702465.hostingersite.com/2713-2/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Términos y Condiciones</a></li>
+                            <li><a href="https://gold-mink-702465.hostingersite.com/2716-2/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Política de Privacidad</a></li>
+                            <li><a href="https://gold-mink-702465.hostingersite.com/2722-2/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Política de Envíos</a></li>
+                            <li><a href="https://gold-mink-702465.hostingersite.com/arrepentimiento/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-rose-400">Botón de Arrepentimiento</a></li>
                         </ul>
                     </div>
 
                     <div className="space-y-8">
                         <h4 className="font-black text-sm uppercase tracking-widest text-primary">Medios de Pago</h4>
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                             <div className="bg-white/10 p-3 rounded-lg flex items-center justify-center h-12">
                                 <div className="font-black text-[10px] text-white/50">VISA</div>
                             </div>
@@ -64,20 +72,26 @@ export default function Footer() {
                                 <div className="font-black text-[10px] text-white/50">AMEX</div>
                             </div>
                         </div>
-                        <p className="text-slate-400 text-xs font-bold leading-relaxed italic">
-                            * Hasta 12 cuotas sin interés con bancos seleccionados a través de Mercado Pago.
+                        <p className="text-slate-400 text-[10px] font-bold leading-relaxed italic">
+                            * Hasta 12 cuotas sin interés con Mercado Pago.
                         </p>
                     </div>
                 </div>
 
-                <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
-                    <div className="text-slate-500 font-bold text-xs tracking-widest">
-                        © 2026 LD IMPORTACIONES. CALIDAD TOTAL GARANTIZADA.
+                <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-start gap-8 relative z-10">
+                    <div className="space-y-2">
+                        <div className="text-slate-500 font-bold text-xs tracking-widest uppercase">
+                            © 2026 LD IMPORTACIONES. CALIDAD TOTAL GARANTIZADA.
+                        </div>
+                        <div className="text-slate-600 font-medium text-[10px] leading-relaxed uppercase tracking-wider">
+                            [RAZÓN SOCIAL DEL CLIENTE]<br />
+                            CUIT: [XX-XXXXXXXX-X]<br />
+                            Defensa del Consumidor: 0800-666-1518
+                        </div>
                     </div>
-                    <div className="flex gap-8 text-slate-500 font-bold text-[10px] uppercase tracking-[0.2em]">
-                        <a href="#" className="hover:text-primary transition-colors">Data Fiscal</a>
-                        <a href="#" className="hover:text-primary transition-colors">Defensa al Consumidor</a>
-                        <a href="#" className="hover:text-primary transition-colors">Privacidad</a>
+                    <div className="flex flex-wrap gap-8 text-slate-500 font-bold text-[10px] uppercase tracking-[0.2em]">
+                        <a href="https://www.argentina.gob.ar/produccion/defensadelconsumidor/formulario" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Defensa al Consumidor</a>
+                        <a href="https://gold-mink-702465.hostingersite.com/arrepentimiento/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Arrepentimiento</a>
                     </div>
                 </div>
             </div>
