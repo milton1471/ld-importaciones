@@ -4,9 +4,6 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
     remotePatterns: [
       {
@@ -22,6 +19,7 @@ const nextConfig: NextConfig = {
         hostname: 'gold-mink-702465.hostingersite.com',
       }
     ],
+    qualities: [75, 100],
   },
 };
 

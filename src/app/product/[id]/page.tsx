@@ -6,9 +6,34 @@ import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import ProductInteraction from "@/components/ProductInteraction";
 import { Product } from "@/types";
+import { Metadata } from "next";
 
 interface PageProps {
     params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { id } = await params;
+    const wcProd = await getProductById(parseInt(id));
+
+    if (!wcProd) {
+        return {
+            title: "Producto no encontrado",
+        };
+    }
+
+    const description = wcProd.short_description.replace(/<[^>]*>?/gm, '').trim().slice(0, 160);
+
+    return {
+        title: `${wcProd.name} | LD Importaciones`,
+        description: description,
+        openGraph: {
+            title: wcProd.name,
+            description: description,
+            images: [wcProd.images[0]?.src].filter(Boolean),
+            type: 'article',
+        },
+    };
 }
 
 export default async function ProductPage({ params }: PageProps) {
@@ -84,8 +109,39 @@ export default async function ProductPage({ params }: PageProps) {
 
     const regPrice = product.isOffer ? product.price * 1.2 : product.price;
 
+    // Structured Data (JSON-LD)
+    const jsonLd = {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": product.name,
+        "image": product.image,
+        "description": product.description,
+        "sku": product.sku || product.id.toString(),
+        "brand": {
+            "@type": "Brand",
+            "name": product.brand
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": `https://ld-importaciones.com.ar/product/${product.id}`,
+            "priceCurrency": "ARS",
+            "price": product.price,
+            "availability": product.stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            "itemCondition": "https://schema.org/NewCondition"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": product.rating,
+            "reviewCount": product.reviewsCount || 1
+        }
+    };
+
     return (
         <div className="min-h-screen bg-white text-slate-800 font-sans">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <Header />
 
             <main className="pt-32 pb-24">

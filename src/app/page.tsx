@@ -6,7 +6,12 @@ import ProductCard from "@/components/ProductCard";
 import { getProducts } from "@/lib/woocommerce";
 import { Product } from "@/types";
 import { Monitor, Tent, Wrench, Home as HomeIcon, Leaf, Sparkles } from "lucide-react";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "LD Importaciones | Productos importados Argentina",
+  description: "Encontrá miles de productos importados de calidad con envío a todo el país. Tecnología, Hogar, Camping y más con garantía oficial.",
+};
 export default async function Home() {
   let products: Product[] = [];
   let error: string | null = null;
@@ -40,23 +45,25 @@ export default async function Home() {
 
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="relative w-full aspect-[21/9] md:aspect-[3/1] lg:aspect-[4/1] overflow-hidden group">
+        <section className="relative w-full h-[500px] overflow-hidden group">
           <Image
             src="/hero-lifestyle-4k.png"
             alt="LD Importaciones - Tu ventana al mundo"
             fill
             className="object-cover transition-transform duration-[10s] group-hover:scale-110"
             priority
+            quality={100}
+            sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-transparent to-transparent flex items-center">
-            <div className="container mx-auto px-4 md:px-8">
-              <div className="max-w-2xl text-white space-y-6">
-                <div className="inline-block bg-primary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-4 animate-in fade-in slide-in-from-left duration-700">Llegaron las Novedades 2026</div>
-                <h1 className="text-5xl md:text-7xl font-black tracking-tighter leading-none animate-in fade-in slide-in-from-left duration-1000">TODO LO QUE BUSCAS<br />EN UN SOLO LUGAR.</h1>
-                <p className="text-lg md:text-xl text-white/80 font-medium animate-in fade-in slide-in-from-left duration-1000 delay-200">Encontrá miles de productos importados de calidad con envío a todo el país y garantía oficial.</p>
-                <div className="pt-8 flex gap-4 animate-in fade-in slide-in-from-bottom duration-1000 delay-500">
-                  <Link href="/search" className="bg-primary text-white px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-primary-dark transition-all shadow-xl shadow-primary/30">Explorar Catálogo</Link>
-                  <Link href="/search?filter=offers" className="bg-white/10 backdrop-blur-md text-white px-8 py-4 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-white/20 transition-all border border-white/20">Ver Ofertas</Link>
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/40 to-transparent flex items-center py-12 md:py-16">
+            <div className="container mx-auto px-6 md:px-8 lg:px-12">
+              <div className="max-w-2xl text-white space-y-4 md:space-y-6">
+                <div className="inline-block bg-primary px-4 py-1.5 rounded-full text-[9px] md:text-[10px] font-black uppercase tracking-[0.3em] mb-2 animate-in fade-in slide-in-from-left duration-700">Llegaron las Novedades 2026</div>
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter leading-tight animate-in fade-in slide-in-from-left duration-1000">TODO LO QUE BUSCAS<br className="hidden sm:block" /> EN UN SOLO LUGAR.</h1>
+                <p className="text-sm md:text-lg lg:text-xl text-white/90 font-medium max-w-xl mt-4 animate-in fade-in slide-in-from-left duration-1000 delay-200">Encontrá miles de productos importados de calidad con envío a todo el país y garantía oficial.</p>
+                <div className="pt-6 md:pt-8 flex flex-col sm:flex-row gap-4 animate-in fade-in slide-in-from-bottom duration-1000 delay-500">
+                  <Link href="/search" className="bg-primary text-white px-8 py-4 md:py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-primary-dark transition-all shadow-xl shadow-primary/30 text-center">Explorar Catálogo</Link>
+                  <Link href="/search?filter=offers" className="bg-white/10 backdrop-blur-md text-white px-8 py-4 md:py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-white/20 transition-all border border-white/20 text-center">Ver Ofertas</Link>
                 </div>
               </div>
             </div>
@@ -106,7 +113,7 @@ export default async function Home() {
               <p className="text-slate-500 font-bold mb-4">{error}</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {products.map((prod) => (
                 <ProductCard key={prod.id} product={prod} />
               ))}

@@ -2,8 +2,39 @@ import { Suspense } from "react";
 import { getProducts } from "@/lib/woocommerce";
 import SearchClient from "./SearchClient";
 import { Product } from "@/types";
+import { CatalogSkeleton } from "@/components/ui/CatalogSkeleton";
+import { Metadata } from "next";
 
-export default async function SearchPage() {
+interface PageProps {
+    searchParams: Promise<{ q?: string; category?: string; filter?: string }>;
+}
+
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+    const params = await searchParams;
+    const query = params.q;
+    const category = params.category;
+
+    if (query) {
+        return {
+            title: `Buscar: ${query}`,
+            description: `Resultados de búsqueda para "${query}" en LD Importaciones. Encontrá los mejores productos importados.`,
+        };
+    }
+
+    if (category) {
+        return {
+            title: category,
+            description: `Explorá nuestra categoría de ${category}. Calidad importada en Argentina.`,
+        };
+    }
+
+    return {
+        title: "Catálogo de Productos",
+        description: "Explorá nuestro catálogo completo con miles de productos importados de calidad.",
+    };
+}
+
+export default async function SearchPage({ searchParams }: PageProps) {
     let products: Product[] = [];
 
     try {
@@ -29,7 +60,7 @@ export default async function SearchPage() {
     }
 
     return (
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center font-black uppercase tracking-widest text-slate-400">Poniendo en marcha el catálogo...</div>}>
+        <Suspense fallback={<CatalogSkeleton />}>
             <SearchClient initialProducts={products} />
         </Suspense>
     );

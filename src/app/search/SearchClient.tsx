@@ -239,7 +239,7 @@ export default function SearchClient({ initialProducts }: SearchClientProps) {
                             </div>
 
                             {filteredProducts.length > 0 ? (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-16">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
                                     {filteredProducts.map(prod => (
                                         <ProductCard key={prod.id} product={prod} />
                                     ))}

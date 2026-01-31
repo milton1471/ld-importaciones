@@ -33,6 +33,24 @@ export default function Header() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    // Lock body scroll when any modal is open
+    useEffect(() => {
+        if (isMenuOpen || isSearchOpen) {
+            const scrollY = window.scrollY;
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
+        } else {
+            const scrollY = document.body.style.top;
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
+        }
+    }, [isMenuOpen, isSearchOpen]);
+
 
 
     const handleSearch = (e: React.FormEvent) => {
@@ -127,7 +145,7 @@ export default function Header() {
 
                     </div>
 
-                    <button className={`lg:hidden p-2 rounded-full transition-colors ${isScrolled ? "hover:bg-slate-100 text-slate-900" : "hover:bg-white/10 text-white"}`} onClick={() => setIsSearchOpen(true)}>
+                    <button className={`lg:hidden p-3 rounded-full transition-colors flex items-center justify-center min-w-[44px] min-h-[44px] ${isScrolled ? "hover:bg-slate-100 text-slate-900" : "hover:bg-white/10 text-white"}`} onClick={() => setIsSearchOpen(true)}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -176,8 +194,57 @@ export default function Header() {
                 </div>
             </div>
 
+            {/* Mobile Search Overlay */}
+            <div className={`fixed inset-0 bg-white z-[9999] w-screen h-screen transition-all duration-300 ${isSearchOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+                <div className="p-6">
+                    <div className="flex items-center gap-4 mb-8">
+                        <button onClick={() => setIsSearchOpen(false)} className="p-3 bg-slate-100 rounded-full active:scale-95 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="h-6 w-6 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        <h2 className="text-xl font-black uppercase tracking-tighter">Buscar Productos</h2>
+                    </div>
+
+                    <form onSubmit={handleSearch} className="relative">
+                        <input
+                            type="text"
+                            placeholder="Buscar en LD Importaciones..."
+                            value={searchQuery}
+                            autoFocus={isSearchOpen}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full h-16 bg-slate-100 rounded-2xl px-6 py-4 text-lg font-bold text-slate-900 border-2 border-transparent focus:border-primary/20 outline-none placeholder:text-slate-400 transition-all"
+                        />
+                        <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 bg-primary text-white p-3 rounded-xl shadow-lg shadow-primary/20">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </form>
+
+                    <div className="mt-12">
+                        <h3 className="text-primary font-black text-xs uppercase tracking-widest mb-6">Categorías Populares</h3>
+                        <div className="grid grid-cols-2 gap-4">
+                            {CATEGORIES.slice(0, 4).map(cat => (
+                                <Link
+                                    key={cat}
+                                    href={`/search?category=${cat}`}
+                                    onClick={() => setIsSearchOpen(false)}
+                                    className="bg-slate-50 p-5 rounded-2xl font-bold text-sm text-slate-700 flex flex-col items-center gap-3 active:scale-95 transition-all text-center"
+                                >
+                                    <div className="text-primary/60 scale-125">
+                                        {CATEGORY_ICONS[cat]}
+                                    </div>
+                                    {cat}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Mobile Menu Overlay */}
-            <div className={`fixed inset-0 bg-white z-[200] transition-transform duration-500 ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
+            <div className={`fixed inset-0 bg-white z-[9999] w-screen h-screen transition-transform duration-500 overflow-y-auto ${isMenuOpen ? "translate-x-0" : "translate-x-full"}`}>
                 <div className="p-6 flex flex-col h-full">
                     <div className="flex justify-between items-center mb-12">
                         <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center font-black text-white text-2xl">LD</div>
